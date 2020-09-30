@@ -2,6 +2,7 @@
 
 from matplotlib import pyplot as plt
 import numpy as np
+import cv2
 from PIL import Image, ImageOps
 from scipy.linalg import hadamard
 
@@ -9,9 +10,12 @@ sz = 16 #Size of image to use (must be n^2 for Hadamard)
 path = "Teddy256.png"
 
 # Open image, resize and make gray scale
-raw_img = Image.open(path)
-gray_img = ImageOps.grayscale(raw_img)
-gray_img = gray_img.resize((sz,sz)) 
+# raw_img = Image.open(path)
+# gray_img = ImageOps.grayscale(raw_img)
+# gray_img = gray_img.resize((sz,sz))
+raw_img = cv2.imread(path)
+gray_img = cv2.cvtColor(raw_img, cv2.COLOR_BGR2GRAY)
+gray_img = cv2.resize(gray_img, (sz,sz)) 
 
 # Convert to number array
 obj = np.array(gray_img)
@@ -30,6 +34,4 @@ for i in range(0,sz**2):
 recon = np.matmul(H,m)
 recon = np.reshape(recon, (sz,sz))
 fig = plt.imshow(recon) 
-
-# A change for testing the repository
 
